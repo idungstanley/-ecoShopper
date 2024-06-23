@@ -53,6 +53,7 @@ const SignupPage = () => {
   const toggleConfirmPasswordVisibility = () => {
     setShowConfirmPassword((prevState) => !prevState)
   }
+
   return (
     <div
       className="bg-no-repeat bg-cover items-center text-gray-700 justify-center bg-gradient-to-r from-gray-800 to-red-200 flex h-full flex-col space-y-2 w-full"
