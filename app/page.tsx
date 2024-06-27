@@ -8,6 +8,7 @@ const font = Poppins({
   weight: ['600'],
 })
 export default function Home() {
+  
   return (
     <main className="items-center text-white justify-center bg-gradient-to-r from-gray-800 to-red-200 flex h-full">
       <div className="flex flex-col items-center justify-center gap-4">

@@ -15,6 +15,7 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Notify from '@/lib/Notify'
 import { PacmanLoader } from 'react-spinners'
+import { Theme, ThemePanel } from '@radix-ui/themes'
 
 export function Providers({ children }: React.PropsWithChildren) {
   const onError = (error: unknown): unknown => {
@@ -27,25 +28,6 @@ export function Providers({ children }: React.PropsWithChildren) {
       Notify({ type: 'errror', text: title })
       return
     }
-
-    // if (typedError.status === 422) {
-    //   title = typedError.data.error
-    // } else if (typedError?.data.error) {
-    //   title = typedError?.data.error
-    // } else if (typedError.status === 403) {
-    //   title = 'Oops! You are not authorized to perform this action.'
-    // } else if (typedError.status === 401) {
-    //   title = 'Oops! You are no longer authenticated!'
-    // } else if (typedError.status === 500 || !typedError) {
-    //   title = 'Oops! An internal server error occurred.'
-    // } else if (typedError.status === 404) {
-    //   title = 'Oops! Reservation not found.'
-    // } else {
-    //   title =
-    //     (typedError.data.error as string) ||
-    //     typedError?.statusText ||
-    //     typedError.data.error
-    // }
     Notify({ type: 'error', text: typedError.data.error })
   }
 
@@ -85,17 +67,20 @@ export function Providers({ children }: React.PropsWithChildren) {
     <SessionProvider>
       <QueryClientProvider client={client}>
         <Provider store={store}>
-          <Suspense
-            fallback={
-              <div className="flex items-center justify-center w-full h-screen">
-                <PacmanLoader color="#36d7b7" />
-              </div>
-            }
-          >
-            {children}
-          </Suspense>
+          <Theme>
+            <Suspense
+              fallback={
+                <div className="flex items-center justify-center w-full h-screen">
+                  <PacmanLoader color="#36d7b7" />
+                </div>
+              }
+            >
+              {children}
+              {/* <ThemePanel /> */}
+            </Suspense>
+          </Theme>
           <ToastContainer position="top-right" />
-          <ReactQueryDevtools initialIsOpen={false} />
+          {/* <ReactQueryDevtools initialIsOpen={false} /> */}
         </Provider>
       </QueryClientProvider>
     </SessionProvider>

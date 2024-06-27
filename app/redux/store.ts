@@ -2,10 +2,14 @@ import { configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import authSlice from '../features/auth/authSlice';
+import mapSlice from '../features/map/mapSlice';
+import chatSlice from '../features/chat/chatSlice';
 
 export const store = configureStore({
     reducer: {
-        auth: authSlice
+        auth: authSlice,
+        map: mapSlice,
+        chat: chatSlice
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

@@ -1,12 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { SelfReq } from './auth.interface';
 
 interface InitialState {
-    selectedRole: null | string;
+    self: SelfReq | null
     signupAccountType: null | string;
 }
 
 const initialState: InitialState = {
-    selectedRole: null,
+    self: null,
     signupAccountType: null
 };
 
@@ -14,8 +15,8 @@ export const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        setSelectedRole: (state, action: PayloadAction<string | null>) => {
-            state.selectedRole = action.payload;
+        getSelf: (state, action: PayloadAction<SelfReq | null>) => {
+            state.self = action.payload;
         },
         setSignupAccountType: (state, action: PayloadAction<string | null>) => {
             state.signupAccountType = action.payload;
@@ -23,5 +24,5 @@ export const authSlice = createSlice({
     }
 });
 
-export const { setSelectedRole, setSignupAccountType } = authSlice.actions;
+export const { getSelf, setSignupAccountType } = authSlice.actions;
 export default authSlice.reducer;

@@ -2,7 +2,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import CredentialsProvider from 'next-auth/providers/credentials';
+import Credentials from "next-auth/providers/credentials"
 
 export const options = {
     session: {
@@ -16,7 +16,7 @@ export const options = {
         error: '/login'
     },
     providers: [
-        CredentialsProvider({
+        Credentials({
             name: 'Credentials',
             credentials: {},
             async authorize(credentials, req) {

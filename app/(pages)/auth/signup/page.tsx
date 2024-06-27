@@ -56,7 +56,7 @@ const SignupPage = () => {
 
   return (
     <div
-      className="bg-no-repeat bg-cover items-center text-gray-700 justify-center bg-gradient-to-r from-gray-800 to-red-200 flex h-full flex-col space-y-2 w-full"
+      className="bg-no-repeat bg-cover items-center text-gray-700 justify-center bg-gradient-to-r from-gray-800 to-red-200 flex h-screen flex-col space-y-2 w-full"
       style={{ backgroundImage: "url('/space-ship.jpg')" }}
     >
       <div className="items-center justify-center flex h-fit p-6 rounded-md flex-col space-y-4 w-1/4 bg-white">
