@@ -31,7 +31,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const storeToken = async () => {
       const session = await getSession()
-      const token = session?.user?.token
+      const token = (session?.user as { token: { token: string } })?.token
 
       if (token) {
         localStorage.setItem('token', JSON.stringify(token?.token))

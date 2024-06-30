@@ -12,7 +12,7 @@ export const signupSchema = yup.object().shape({
         .string()
         .label('confirm password')
         .required()
-        .oneOf([yup.ref('password'), null], 'Both passwords must match')
+        .oneOf([yup.ref('password')], 'Both passwords must match')
 });
 export const signinSchema = yup.object().shape({
     email: yup.string().email('Invalid email address').required('Please enter your email address'),

@@ -10,7 +10,7 @@ interface InitialState {
 const initialState: InitialState = {
     self: null,
     signupAccountType: null,
-    users: null
+    users: []
 };
 
 export const authSlice = createSlice({
