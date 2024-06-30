@@ -2,7 +2,7 @@ import requestNew from "@/app/utils/requestNew";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { GetResourcesReq } from "./map.interface";
 import { useAppDispatch } from "@/app/redux/store";
-import { setMapResources } from "./mapSlice";
+import { setMapResources, setPlannerCoordinates } from "./mapSlice";
 
 export const useGetResource = () => {
     const dispatch = useAppDispatch();
@@ -29,6 +29,7 @@ export const routePlanner = ({ destinationType, currentLocation }: { destination
     });
     return response;
 };
+
 export const report = ({ type, description, location }: { description: string, type: string, location: string[]; }) => {
     const response = requestNew({
         url: '/report/',
@@ -39,10 +40,15 @@ export const report = ({ type, description, location }: { description: string, t
 };
 
 export const useRoutePlanner = () => {
+    const dispatch = useAppDispatch()
     return useMutation({
-        mutationFn: routePlanner
+        mutationFn: routePlanner,
+        onSuccess: (data) => {
+            dispatch(setPlannerCoordinates((data as any)?.data?.destination.location.coordinates))
+            console.log("routedata:", (data as any)?.data?.destination.location.coordinates);
+        }
     });
-}; 
+};
 
 export const useReport = () => {
     return useMutation({

@@ -28,7 +28,7 @@ const Map = () => {
     lat: 0,
     lng: 0,
   })
-  const {resources} = useAppSelector(state=> state.map)
+  const {resources, plannerCoordinates} = useAppSelector(state=> state.map)
   const [directions, setDirections] = useState<DirectionsResult>()
   const mapRef = useRef<GoogleMap>()
   const options = useMemo<MapOptions>(
@@ -79,6 +79,10 @@ const Map = () => {
       },
     )
   }
+
+  useEffect(() => {
+    fetchDirections({lat: plannerCoordinates[1], lng: plannerCoordinates[0]})
+  },[plannerCoordinates])
 
   return (
     <div>
