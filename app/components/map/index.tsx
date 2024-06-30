@@ -1,4 +1,5 @@
-'use client'
+
+'use client';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   GoogleMap,
@@ -107,6 +108,7 @@ const Map = () => {
           />
           <MarkerClusterer>
             {(clusterer) =>
+          // @ts-ignore
               resourceLocation?.map((resource) => (
                 <Marker
                   clusterer={clusterer}
