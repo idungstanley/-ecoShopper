@@ -28,7 +28,6 @@ export const Menus = [
   { title: 'Dashboard', src: LuLayoutDashboard, route: '/dashboard' },
   { route: '/route-planner', title: 'Route Planner', src: FaSignal },
   { route: '/report', title: 'Report', src: MdContactSupport, gap: true },
-  { route: '/settings', title: 'Settings', src: MdOutlineSettings },
   { route: '/logout', title: 'Logout', src: BiLogOutCircle },
 ]
 
