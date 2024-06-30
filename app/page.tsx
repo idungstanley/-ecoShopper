@@ -10,7 +10,7 @@ const font = Poppins({
 export default function Home() {
   
   return (
-    <main className="items-center text-white justify-center bg-gradient-to-r from-gray-800 to-red-200 flex h-full">
+    <main className="items-center text-white justify-center bg-gradient-to-r from-gray-800 to-red-200 flex h-screen">
       <div className="flex flex-col items-center justify-center gap-4">
         <h1 className={cn('font-bold text-[35px]', font.className)}>
           👽 Safe Route Planner
