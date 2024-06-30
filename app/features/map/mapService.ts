@@ -29,9 +29,23 @@ export const routePlanner = ({ destinationType, currentLocation }: { destination
     });
     return response;
 };
+export const report = ({ type, desiscription, location }: { desiscription: string, type: string, location: string[]; }) => {
+    const response = requestNew({
+        url: '/report/',
+        method: 'POST',
+        data: { type, desiscription, location }
+    });
+    return response;
+};
 
 export const useRoutePlanner = () => {
     return useMutation({
         mutationFn: routePlanner
+    });
+}; 
+
+export const useReport = () => {
+    return useMutation({
+        mutationFn: report
     });
 }; 

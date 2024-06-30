@@ -4,16 +4,22 @@ export interface SignupProps {
     fullName: string;
 }
 
+export interface UserProps {
+    role: string;
+    fullName: string;
+    email: string;
+    id: string;
+}
 export interface SelfReq {
-    user: {
-        role: string;
-        fullName: string;
-        email: string;
-        id: string;
-    };
+    user: UserProps;
     token: {
         token: string;
         expires: string;
     };
     message: string;
+}
+
+export interface GetUserProps {
+    message: string;
+    data: UserProps[];
 }

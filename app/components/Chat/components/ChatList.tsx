@@ -2,20 +2,26 @@
 import React from 'react'
 import { BsChatSquareText } from 'react-icons/bs'
 import ChatListCard from './ChatListCard'
-interface ChatListProps {
-  reversedMessage: {
-    id: string
-    sender: {
-      fullName: string
-      image: string
-    }
-    message: string
-  }[]
-  setShowEmojiModal: React.Dispatch<React.SetStateAction<boolean>>
-}
+import { ChatProps } from '@/app/features/chat/chat.interface'
+import { ClipLoader } from 'react-spinners'
 
-const ChatList = ({ reversedMessage, setShowEmojiModal }: ChatListProps) => {
-  if (!reversedMessage || reversedMessage.length === 0) {
+const ChatList = ({
+  chats,
+  joinChat,
+  isChatsLoading,
+}: {
+  chats: ChatProps[]
+  joinChat: ()=> void
+  isChatsLoading: boolean
+}) => {
+  if (isChatsLoading || !chats) {
+    return (
+      <div className="w-full h-full flex items-center justify-center">
+        <ClipLoader />
+      </div>
+    )
+  }
+  if (chats.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center w-full p-4 text-center">
         <BsChatSquareText size={100} />
@@ -24,15 +30,15 @@ const ChatList = ({ reversedMessage, setShowEmojiModal }: ChatListProps) => {
     )
   }
   return (
-    <div className="flex-col items-start justify-start hidden w-full h-[580px] overflow-y-auto text-center lg:flex grow">
+    <div className="flex-col items-start justify-start w-full h-[580px] overflow-y-auto text-center flex grow">
       <div className="flex flex-col items-start justify-start w-full">
-        {reversedMessage.map((msg, index) => (
+        {chats.map((msg, index) => (
           <ChatListCard
             key={index}
-            id={msg.id}
-            fullName={msg.sender.fullName}
-            message={msg.message}
-            userImg={msg?.sender.image}
+            id={msg._id}
+            fullName={msg.name}
+            message="Nothing to show"
+            userImg="/home-locations.png"
           />
         ))}
       </div>

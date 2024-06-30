@@ -10,7 +10,6 @@ import { usePathname } from 'next/navigation'
 const Sidebar = () => {
   const [open, setOpen] = useState(true)
   const pathname = usePathname()
-  console.log(pathname)
 
   const sideBarOptions = [
     {

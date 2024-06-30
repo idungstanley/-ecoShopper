@@ -34,7 +34,7 @@ const ChatInput = ({
   }
   return (
     <form
-      className="relative flex items-center w-full p-4 border-t border-gray-200"
+      className="absolute bottom-0 flex items-center w-full p-4 border-t border-gray-200 bg-white"
       onSubmit={onSubmit}
     >
       <div className="flex items-center relative w-full">
@@ -43,7 +43,7 @@ const ChatInput = ({
         </div>
         <input
           id="search-bar"
-          onChange={(e: any) => onChange(e.target.value)}
+          onChange={(e) => onChange(e.target.value)}
           value={value}
           placeholder="what are your thoughts?"
           name="q"

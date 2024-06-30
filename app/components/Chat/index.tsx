@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import ChatBody from './components/ChatBody'
 import ChatInput from './components/ChatInput'
 import { useSession } from 'next-auth/react'
@@ -6,115 +6,80 @@ import SelectedChatHeader from './components/ChatNav'
 import ChatHeader from './components/ChatHeader'
 import ChatList from './components/ChatList'
 import { useAppSelector } from '@/app/redux/store'
-
-const reversedMessage = [
-  {
-    id: '1',
-    sender: {
-      fullName: 'Stanley Sunday',
-      image: '/space-ship.jpg',
-    },
-    message: 'I want to go home, please help me escape',
-  },
-  {
-    id: '2',
-    sender: {
-      fullName: 'Nich diamond',
-      image: '/home-locations.png',
-    },
-    message: 'okay',
-  },
-  {
-    id: '3',
-    sender: {
-      fullName: 'Blessing',
-      image: '/hospital.png',
-    },
-    message: 'Nah, please help me check',
-  },
-  {
-    id: '4',
-    sender: {
-      fullName: 'Ugo',
-      image: '/home-locations.png',
-    },
-    message: 'Sure',
-  },
-  {
-    id: '5',
-    sender: {
-      fullName: 'Adams Talstrike',
-      image: '/hospital.png',
-    },
-    message: 'I will look into it now.',
-  },
-  {
-    id: '6',
-    sender: {
-      fullName: 'Daniel bro',
-      image: '/food-location.png',
-    },
-    message: 'You no dey reply chat again ni. . .',
-  },
-  {
-    id: '7',
-    sender: {
-      fullName: 'stanley',
-      image: '/food-location.png',
-    },
-    message: 'I want to go home, please help me escape',
-  },
-  {
-    id: '8',
-    sender: {
-      fullName: 'stanley',
-      image: '/home-locations.png',
-    },
-    message: 'I want to go home, please help me escape',
-  },
-]
+import {
+  useGetChats,
+  useGetMessagesInChat,
+} from '@/app/features/chat/chatService'
+import socketIO from 'socket.io-client'
+import { MessagesInChatProps } from '@/app/features/chat/chat.interface'
+import socket from '@/app/utils/socket'
 
 const Chat = () => {
-  const { selectedChatId } = useAppSelector((state) => state.chat)
-  const [comment, setComment] = useState('')
+  const { isLoading: isChatsLoading } = useGetChats()
+
+  const { selectedChatId, chats, messagesInChat } = useAppSelector(
+    (state) => state.chat,
+  )
+
+  const { isLoading, data } = useGetMessagesInChat(selectedChatId as string)
+
+  const { self } = useAppSelector((state) => state.auth)
+  const [message, setMessage] = useState('')
+  const [messages, setMessages] = useState(
+    messagesInChat as MessagesInChatProps[],
+  )
   const [showemojimodal, setShowEmojiModal] = useState(false)
 
-  const displayEmojiModal = (e: any) => {
-    setShowEmojiModal(true)
-    console.log(e.clientX)
-    console.log(e.clientY)
-  }
+  const chatTitle = chats.find((item) => item._id === selectedChatId)
+
+  useEffect(() => {
+    setMessages(messagesInChat as MessagesInChatProps[])
+    socket.emit('joinChat', selectedChatId)
+    socket.on('receiveMessage', (message: MessagesInChatProps) => {
+      setMessages((prev) => [...prev, message])
+    })
+    return () => {
+      socket.off('receiveMessage')
+    }
+  }, [selectedChatId, data, messagesInChat])
 
   const handleSendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setComment('')
+    socket.emit('sendMessage', {
+      content: message,
+      senderId: self?.user.id,
+      chatId: selectedChatId,
+    })
+    setMessage('')
   }
+
+  console.log('messages: ', messages)
+
+  const joinChatOverSocket = useCallback(() => {
+    socket.emit('joinChat', { chatId: selectedChatId })
+  }, [selectedChatId])
+
   return (
-    <div className="bg-white z-[9999] border border-gray-100 rounded-md fixed bottom-24 right-4 max-h-[740px] w-[400px]">
+    <div className="bg-white z-[9999] border border-gray-100 rounded-md fixed bottom-24 right-4 h-[740px] lg:w-[400px] w-full">
       {!selectedChatId && (
         <>
           <ChatHeader />
           <ChatList
-            reversedMessage={reversedMessage}
-            setShowEmojiModal={setShowEmojiModal}
+            isChatsLoading={isChatsLoading}
+            joinChat={joinChatOverSocket}
+            chats={chats}
           />
         </>
       )}
       {selectedChatId && (
         <>
-          <SelectedChatHeader
-            commentCount={reversedMessage?.length}
-            isCommentMade={reversedMessage?.length > 0}
-          />
-          <ChatBody
-            reversedMessage={reversedMessage}
-            setShowEmojiModal={setShowEmojiModal}
-          />
+          <SelectedChatHeader chatInfo={chatTitle} />
+          <ChatBody messages={messages} isMessagesLoading={isLoading} />
           <ChatInput
             setShowEmojiModal={setShowEmojiModal}
             showemojimodal={showemojimodal}
-            value={comment}
-            onChange={setComment}
+            value={message}
+            onChange={setMessage}
             isFriendsOnly
             onSubmit={handleSendMessage}
           />

@@ -76,8 +76,6 @@ const Map = () => {
     )
   }
 
-  console.log("data: ", data?.data)
-
   return (
     <div>
       <GoogleMap

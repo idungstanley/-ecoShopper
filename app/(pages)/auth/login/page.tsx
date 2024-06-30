@@ -20,7 +20,6 @@ const LoginPage = () => {
     validationSchema: signinSchema,
     validateOnBlur: true,
     onSubmit: async (values: SigninValidationProps) => {
-      console.log('stan')
       try {
         await signIn('credentials', {
           password: values.password,

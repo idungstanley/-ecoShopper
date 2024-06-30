@@ -46,7 +46,7 @@ const SidebarMenu = ({
   const handleClick = (item: string) => {
     if (item === '/logout') {
       signOut()
-      router.push('/login')
+      router.push('/auth/login')
     } else {
       router.push(item)
     }

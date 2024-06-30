@@ -39,8 +39,6 @@ const RoutePlannerPage = () => {
     })
   }
 
-  console.log('map details:', data)
-
   return (
     <div className="my-4">
       <Input

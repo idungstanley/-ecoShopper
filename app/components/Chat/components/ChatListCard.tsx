@@ -1,5 +1,6 @@
-import { setChatSelectedId } from '@/app/features/chat/chatSlice'
+import { setSelectedChatId } from '@/app/features/chat/chatSlice'
 import { useAppDispatch } from '@/app/redux/store'
+import socket from '@/app/utils/socket';
 import Image from 'next/image'
 import React from 'react'
 import { LuCheckCheck } from 'react-icons/lu'
@@ -17,13 +18,13 @@ const ChatListCard = ({
   id: string
 }) => {
   const dispatch = useAppDispatch()
-
   const handleSelectChat = () => {
-    dispatch(setChatSelectedId(id))
+    dispatch(setSelectedChatId(id))
+    socket.emit('joinChat', id)
   }
   return (
     <div
-      className="flex items-center w-full h-[80px] gap-2 px-2"
+      className="flex items-center w-full h-[80px] gap-2 px-2 cursor-pointer"
       onClick={handleSelectChat}
     >
       <Image

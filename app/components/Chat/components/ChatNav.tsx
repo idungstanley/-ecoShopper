@@ -1,33 +1,91 @@
-import { setBacktoChatList } from '@/app/features/chat/chatSlice';
-import { useAppDispatch } from '@/app/redux/store';
-import React from 'react'
-import { GoSidebarCollapse } from 'react-icons/go'
+import {
+  getMessagesInChat,
+  setSelectedChatId,
+} from '@/app/features/chat/chatSlice'
+import { useAppDispatch, useAppSelector } from '@/app/redux/store'
+import React, { useRef, useState } from 'react'
+import { BsThreeDotsVertical } from 'react-icons/bs'
+import { IoMdArrowRoundBack } from 'react-icons/io'
+import { useClickAway } from 'react-use'
+import MultiSelectDropdown from '../../MultiSelectDropdown'
+import { Button } from '@radix-ui/themes'
+import { UserProps } from '@/app/features/auth/auth.interface'
+import { useAddUserToChat } from '@/app/features/chat/chatService'
+import { ChatProps } from '@/app/features/chat/chat.interface'
 
-const SelectedChatHeader = ({
-  isCommentMade,
-}: {
-  isCommentMade: boolean
-  commentCount?: number
-}) => {
+const SelectedChatHeader = ({ chatInfo }: { chatInfo?: ChatProps }) => {
   const dispatch = useAppDispatch()
+  const ref = useRef(null)
+  const { mutateAsync } = useAddUserToChat()
+  const { users } = useAppSelector((state) => state.auth)
+
+  const [showUsers, setShowUsers] = useState(false)
+  const [selectedOptions, setSelectedOptions] = useState<UserProps[]>([])
+
+  useClickAway(ref, () => setShowUsers(false))
+
   const handleCollapse = () => {
-    dispatch(setBacktoChatList(true))
+    dispatch(setSelectedChatId(null))
+    dispatch(getMessagesInChat(null))
   }
+
+  const handleAddUsers = async () => {
+    await mutateAsync({
+      chatId: chatInfo?._id as string,
+      userToBeAddedId: selectedOptions.map((item) => item.id),
+    })
+  }
+
+  const activeChatUserIds = chatInfo?.members.map((item) => item.id)
+  const filterOutExistingUser = users.filter((item) =>
+    !activeChatUserIds?.includes(item.id),
+  )
+
   return (
-    <div className="relative hidden lg:flex items-center justify-center w-full min-h-[70px] border-b border-gray-300">
+    <div className="relative px-3 flex items-center justify-between w-full min-h-[70px] border-b border-gray-300">
       <span
-        className="absolute text-[20px] text-gray-600 left-3 hover:cursor-pointer hover:text-black hover:text-[24px] transition-all ease-in-out"
-        onClick={() => handleCollapse()}
+        className="text-[20px] text-gray-600 hover:cursor-pointer hover:text-black"
+        onClick={handleCollapse}
       >
-        <GoSidebarCollapse />
+        <IoMdArrowRoundBack />
       </span>
       <div
         className={`text-xl my-3 relative ${
-          isCommentMade ? 'font-extrabold text-gray-600' : 'font-normal'
+          chatInfo?.name ? 'font-extrabold text-gray-600' : 'font-normal'
         }`}
       >
-        LIVE CHAT
+        {chatInfo?.name}
       </div>
+      <span
+        className="text-[20px] text-gray-600 hover:cursor-pointer hover:text-black"
+        onClick={() => setShowUsers((prev) => !prev)}
+      >
+        <BsThreeDotsVertical />
+      </span>
+
+      {showUsers && (
+        <div
+          ref={ref}
+          className="rounded-md border border-gray-200 bg-white absolute top-14 right-0 p-4"
+        >
+          <MultiSelectDropdown
+            setSelectedOptions={setSelectedOptions}
+            selectedOptions={selectedOptions}
+            formFieldName={'users'}
+            options={filterOutExistingUser}
+            onChange={(selectedUsers) => {
+              console.log('selectedUsers', selectedUsers)
+            }}
+          />
+          <Button
+            className="bg-blue-600 hover:bg-blue-800 w-full"
+            disabled={selectedOptions.length === 0}
+            onClick={handleAddUsers}
+          >
+            Add user
+          </Button>
+        </div>
+      )}
     </div>
   )
 }

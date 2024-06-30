@@ -2,15 +2,16 @@
 import Chat from '@/app/components/Chat'
 import Map from '@/app/components/map'
 import NavHeader from '@/app/components/nav/NavHeader'
-import { useGetSelf } from '@/app/features/auth/authService'
+import { useGetAllUser, useGetSelf } from '@/app/features/auth/authService'
 import { useGetResource } from '@/app/features/map/mapService'
 import { cn } from '@/lib/utils'
 import { useLoadScript } from '@react-google-maps/api'
 import { getSession } from 'next-auth/react'
 import { Poppins } from 'next/font/google'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { SiChatbot } from 'react-icons/si'
 import { PacmanLoader } from 'react-spinners'
+import { useClickAway } from 'react-use'
 
 const font = Poppins({
   subsets: ['latin'],
@@ -18,10 +19,14 @@ const font = Poppins({
 })
 
 const layout = ({ children }: { children: React.ReactNode }) => {
-  const { data } = useGetSelf()
   useGetResource()
+  useGetSelf()
+  useGetAllUser()
 
   const [showChat, setShowChat] = useState<boolean>(false)
+  const ref = useRef(null)
+
+  useClickAway(ref, () => setShowChat(false))
 
   useEffect(() => {
     const storeToken = async () => {
@@ -58,13 +63,15 @@ const layout = ({ children }: { children: React.ReactNode }) => {
           <Map />
         </div>
       </div>
-      {showChat && <Chat />}
-      <span
-        className="absolute bottom-6 flex items-center justify-center p-2 bg-white rounded-full right-4 z-[9999]"
-        onClick={() => setShowChat((prev) => !prev)}
-      >
-        <SiChatbot className="text-[40px] text-[#1b1b1b]" />
-      </span>
+      <div ref={ref}>
+        {showChat && <Chat />}
+        <span
+          className="absolute bottom-6 flex items-center justify-center p-2 bg-white rounded-full right-4 z-[9999]"
+          onClick={() => setShowChat((prev) => !prev)}
+        >
+          <SiChatbot className="text-[40px] text-[#1b1b1b]" />
+        </span>
+      </div>
     </div>
   )
 }
