@@ -16,6 +16,7 @@ const page = () => {
   const [longitude, setLongitude] = useState("")
   const [latitude, setLatitude] = useState("")
   const [report, setReport] = useState("")
+  // const [report, setReport] = useState("")
   const {mutateAsync} = useReport()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
