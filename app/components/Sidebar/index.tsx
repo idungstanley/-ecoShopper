@@ -1,34 +1,29 @@
 import React, { SetStateAction } from 'react'
-import { LuLayoutDashboard } from 'react-icons/lu'
+import { LuLayoutDashboard, LuPowerOff } from 'react-icons/lu'
 import { FaSignal } from 'react-icons/fa'
 import { MdContactSupport } from 'react-icons/md'
-import { BiCopy, BiLogOutCircle } from 'react-icons/bi'
-import { MdOutlineSettings } from 'react-icons/md'
+import { BiCopy } from 'react-icons/bi'
 import { usePathname, useRouter } from 'next/navigation'
 import { signOut } from '@/auth'
 import {
   Avatar,
   Badge,
   Box,
-  Card,
   Code,
-  DataList,
   Flex,
   Heading,
   HoverCard,
   IconButton,
   Link,
   Separator,
-  Text,
 } from '@radix-ui/themes'
 import { useAppSelector } from '@/app/redux/store'
-import { SelfReq } from '@/app/features/auth/auth.interface'
+import Logout from '../../lib/Logout'
 
 export const Menus = [
   { title: 'Dashboard', src: LuLayoutDashboard, route: '/dashboard' },
   { route: '/route-planner', title: 'Route Planner', src: FaSignal },
   { route: '/report', title: 'Report', src: MdContactSupport, gap: true },
-  { route: '/logout', title: 'Logout', src: BiLogOutCircle },
 ]
 
 const SidebarMenu = ({
@@ -92,7 +87,9 @@ const SidebarMenu = ({
               </Flex>
             </HoverCard.Content>
           </HoverCard.Root>
-          <Link size="2" href={`mailto:${self?.user.email}`}>{self?.user.email}</Link>
+          <Link size="2" href={`mailto:${self?.user.email}`}>
+            {self?.user.email}
+          </Link>
         </Flex>
       </Flex>
       <Separator orientation="horizontal" color="green" size="4" />
@@ -118,6 +115,7 @@ const SidebarMenu = ({
             </span>
           </li>
         ))}
+        <Logout />
       </ul>
     </div>
   )

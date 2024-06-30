@@ -51,8 +51,6 @@ const Chat = () => {
     setMessage('')
   }
 
-  console.log('messages: ', messages)
-
   const joinChatOverSocket = useCallback(() => {
     socket.emit('joinChat', { chatId: selectedChatId })
   }, [selectedChatId])

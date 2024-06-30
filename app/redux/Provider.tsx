@@ -71,7 +71,7 @@ export function Providers({ children }: React.PropsWithChildren) {
             <Suspense
               fallback={
                 <div className="flex items-center justify-center w-full h-screen">
-                  <PacmanLoader color="#36d7b7" />
+                  <PacmanLoader color="#1c5754" />
                 </div>
               }
             >

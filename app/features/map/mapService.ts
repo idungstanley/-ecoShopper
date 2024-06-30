@@ -45,7 +45,6 @@ export const useRoutePlanner = () => {
         mutationFn: routePlanner,
         onSuccess: (data) => {
             dispatch(setPlannerCoordinates((data as any)?.data?.destination.location.coordinates))
-            console.log("routedata:", (data as any)?.data?.destination.location.coordinates);
         }
     });
 };

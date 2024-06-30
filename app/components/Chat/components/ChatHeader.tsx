@@ -21,9 +21,7 @@ const ChatHeader = () => {
   const [showUsers, setShowUsers] = useState(false)
 
   const ref = useRef(null)
-
   useClickAway(ref, () => setShowUsers(false))
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     setChatName(value)

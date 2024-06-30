@@ -60,9 +60,6 @@ const Map = () => {
     })) as ResourceProps[]
   }, [resources])
 
-  console.log(resourceLocation)
-  console.log(myCoordinates)
-
   const fetchDirections = (destination: LatLngLiteral) => {
     if (!myCoordinates) return
     const service = new google.maps.DirectionsService()
