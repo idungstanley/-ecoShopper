@@ -7,7 +7,7 @@ import { setMapResources } from "./mapSlice";
 export const useGetResource = () => {
     const dispatch = useAppDispatch();
     return useQuery<GetResourcesReq>({
-        queryKey: [''],
+        queryKey: ['map-view'],
         queryFn: async () => {
             const data = await requestNew<GetResourcesReq>({
                 url: '/map-view',
@@ -29,11 +29,11 @@ export const routePlanner = ({ destinationType, currentLocation }: { destination
     });
     return response;
 };
-export const report = ({ type, desiscription, location }: { desiscription: string, type: string, location: string[]; }) => {
+export const report = ({ type, description, location }: { description: string, type: string, location: string[]; }) => {
     const response = requestNew({
         url: '/report/',
         method: 'POST',
-        data: { type, desiscription, location }
+        data: { type, description, location }
     });
     return response;
 };

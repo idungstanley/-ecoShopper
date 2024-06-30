@@ -2,6 +2,7 @@
 import Input from '@/app/components/inputs/Input'
 import { useCreateUser } from '@/app/features/auth/authService'
 import { SignupValidationProps } from '@/app/types'
+import { SignIn } from '@/app/lib/action'
 import { signupSchema } from '@/app/validationSchema'
 import { Button } from '@/components/ui/button'
 import { useFormik } from 'formik'
@@ -35,11 +36,7 @@ const SignupPage = () => {
           password: values.password,
           email: values.email,
         })
-        await signIn('credentials', {
-          password: values.password,
-          email: values.email,
-        })
-        router.push('/dashboard')
+        await SignIn(values)
       } catch (error) {
         console.log(error)
       }
@@ -57,7 +54,7 @@ const SignupPage = () => {
   return (
     <div
       className="bg-no-repeat bg-cover items-center text-gray-700 justify-center bg-gradient-to-r from-gray-800 to-red-200 flex h-screen flex-col space-y-2 w-full"
-      style={{ backgroundImage: "url('/space-ship.jpg')" }}
+      // style={{ backgroundImage: "url('/space-ship.jpg')" }}
     >
       <div className="items-center justify-center flex h-fit p-6 rounded-md flex-col space-y-4 w-1/4 bg-white">
         <header className="text-[20px] font-extrabold">

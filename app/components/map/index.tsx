@@ -1,5 +1,4 @@
-
-'use client';
+'use client'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   GoogleMap,
@@ -9,6 +8,7 @@ import {
   MarkerClusterer,
 } from '@react-google-maps/api'
 import { useGetResource } from '@/app/features/map/mapService'
+import { useAppSelector } from '@/app/redux/store';
 
 type LatLngLiteral = google.maps.LatLngLiteral
 type DirectionsResult = google.maps.DirectionsResult
@@ -28,6 +28,7 @@ const Map = () => {
     lat: 0,
     lng: 0,
   })
+  const {resources} = useAppSelector(state=> state.map)
   const [directions, setDirections] = useState<DirectionsResult>()
   const mapRef = useRef<GoogleMap>()
   const options = useMemo<MapOptions>(
@@ -47,10 +48,9 @@ const Map = () => {
     })
   }, [])
 
-
   const onLoad = useCallback((map: any) => (mapRef.current = map), [])
   const resourceLocation = useMemo<ResourceProps[]>(() => {
-    return data?.data?.resources?.map((item) => ({
+    return resources?.map((item) => ({
       type: item.type,
       location: {
         lat: item.location.coordinates[1],
@@ -58,7 +58,10 @@ const Map = () => {
       },
       name: item.name,
     })) as ResourceProps[]
-  }, [])
+  }, [resources])
+
+  console.log(resourceLocation)
+  console.log(myCoordinates)
 
   const fetchDirections = (destination: LatLngLiteral) => {
     if (!myCoordinates) return
@@ -92,8 +95,8 @@ const Map = () => {
               directions={directions}
               options={{
                 polylineOptions: {
-                      zIndex: 50,
-                    strokeWeight: 5
+                  zIndex: 50,
+                  strokeWeight: 5,
                 },
               }}
             />
@@ -108,7 +111,7 @@ const Map = () => {
           />
           <MarkerClusterer>
             {(clusterer) =>
-          // @ts-ignore
+              // @ts-ignore
               resourceLocation?.map((resource) => (
                 <Marker
                   clusterer={clusterer}

@@ -16,6 +16,7 @@ export const useGetChats = () => {
             if (data) {
                 dispatch(getChats(data.data));
             }
+            console.log(data)
             return data;
         }
     });

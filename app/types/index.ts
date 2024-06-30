@@ -17,6 +17,9 @@ export type SignupValidationProps = {
     fullName: string;
     confirmPassword: string;
 };
+export type ReportValidationProps = {
+    description: string; longitude: string; latitude: string;
+};
 export type SigninValidationProps = {
     email: string;
     password: string;
