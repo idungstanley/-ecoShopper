@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import ChatBody from './components/ChatBody'
 import ChatInput from './components/ChatInput'
-import { useSession } from 'next-auth/react'
 import SelectedChatHeader from './components/ChatNav'
 import ChatHeader from './components/ChatHeader'
 import ChatList from './components/ChatList'
@@ -10,7 +9,6 @@ import {
   useGetChats,
   useGetMessagesInChat,
 } from '@/app/features/chat/chatService'
-import socketIO from 'socket.io-client'
 import { MessagesInChatProps } from '@/app/features/chat/chat.interface'
 import socket from '@/app/utils/socket'
 
@@ -52,8 +50,6 @@ const Chat = () => {
     })
     setMessage('')
   }
-
-  console.log('messages: ', messages)
 
   const joinChatOverSocket = useCallback(() => {
     socket.emit('joinChat', { chatId: selectedChatId })

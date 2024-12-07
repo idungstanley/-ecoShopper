@@ -1,10 +1,10 @@
 'use client'
 import Input from '@/app/components/inputs/Input'
 import { SigninValidationProps } from '@/app/types'
+import { SignIn } from '@/app/lib/action'
 import { signinSchema } from '@/app/validationSchema'
 import { Button } from '@/components/ui/button'
 import { useFormik } from 'formik'
-import { signIn } from 'next-auth/react'
 import React, { useState } from 'react'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
 
@@ -21,12 +21,7 @@ const LoginPage = () => {
     validateOnBlur: true,
     onSubmit: async (values: SigninValidationProps) => {
       try {
-        await signIn('credentials', {
-          password: values.password,
-          email: values.email,
-          redirect: true,
-          callbackUrl: '/dashboard'
-        })
+        await SignIn(values)
       } catch (error) {
         console.log(error)
       }
@@ -40,7 +35,7 @@ const LoginPage = () => {
   return (
     <div
       className="bg-no-repeat bg-cover items-center text-gray-700 justify-center bg-gradient-to-r from-gray-800 to-red-200 flex h-screen flex-col space-y-2 w-full"
-      style={{ backgroundImage: "url('/space-ship.jpg')" }}
+      // style={{ backgroundImage: "url('/space-ship.jpg')" }}
     >
       <div className="items-center justify-center flex h-fit p-6 rounded-md flex-col space-y-4 w-1/4 bg-white">
         <header className="text-[20px] font-extrabold">
@@ -77,9 +72,9 @@ const LoginPage = () => {
             isError={!!formik.errors.password && !!formik.touched.password}
             onBlur={formik.handleBlur}
           />
-        <Button className="w-full bg-gray-800" type="submit">
-          Login
-        </Button>
+          <Button className="w-full bg-gray-800" type="submit">
+            Login
+          </Button>
         </form>
       </div>
     </div>

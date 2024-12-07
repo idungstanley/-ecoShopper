@@ -14,6 +14,12 @@ export const signupSchema = yup.object().shape({
         .required()
         .oneOf([yup.ref('password')], 'Both passwords must match')
 });
+
+export const reportSchema = yup.object().shape({
+    logitude: yup.string(),
+    latitude: yup.string(),
+    description: yup.string()
+});
 export const signinSchema = yup.object().shape({
     email: yup.string().email('Invalid email address').required('Please enter your email address'),
     password: yup

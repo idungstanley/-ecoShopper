@@ -37,7 +37,7 @@ const ChatList = ({
             key={index}
             id={msg._id}
             fullName={msg.name}
-            message="Nothing to show"
+            message="Click to view chat"
             userImg="/home-locations.png"
           />
         ))}

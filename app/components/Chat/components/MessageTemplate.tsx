@@ -1,6 +1,7 @@
 import { useAppSelector } from '@/app/redux/store'
 import Image from 'next/image'
 import React from 'react'
+import { LuCheckCheck } from 'react-icons/lu';
 
 const MessageTemplate = ({
   userImg,
@@ -31,10 +32,13 @@ const MessageTemplate = ({
         />
       )}
       <div>
-        <div className="bg-[#f1f1f1] p-1 px-2 rounded-l-lg rounded-t-lg max-w-[300px]">
-          <p className="text-[14px] mt-[9px] text-[#343D45] leading-[179.5%] text-left whitespace-pre-wrap w-full">
+        <div className="bg-[#f1f1f1] p-1 px-2 rounded-l-lg rounded-t-lg max-w-[300px] flex items-center gap-1">
+          <p className="text-[14px] text-[#343D45] leading-[179.5%] text-left whitespace-pre-wrap w-full">
             {message}
           </p>
+          <span>
+            <LuCheckCheck />
+          </span>
         </div>
       </div>
     </div>
